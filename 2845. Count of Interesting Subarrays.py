@@ -64,52 +64,35 @@ class BIT:
         return result 
 import math
 class Solution:
-    def getWordsInLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:        
-        
-        n = len(words)
-        if n == 10 and groups[0] == 10 and words[5] == "aba":
-            return ["add","aad"]
-        prev = []
-        dic = dict()
-        for j in range(n):
-            w, g = words[j], groups[j]
-            max_len = 1
-            max_prev = -1
-            for i in range(len(w)):
-                sub = w[:i]+"$"+w[i+1:]
-                if sub in dic:
-                    g1, l, prev1 = dic[sub]
-                    _, l = prev[prev1]
-                    if g != g1:
-                        l += 1
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        dic[sub] = g, l, j
-                    else:
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        
-
-                else:
-                    dic[sub] = g, 1, j
-            prev.append((max_prev, max_len))
-        max_len = max([y for _, y in prev])
-        p = max([i for i, (_, y) in enumerate(prev) if y == max_len])
-        result = [words[p]]
-        _, l = prev[p]
-        while (p >= 0):
-            (p, l1), w = prev[p], words[p]
-            if l1 < l:
-                result.append(w)
-            l = l1
-        print(prev)
-        return list(reversed(result))
+    def countInterestingSubarrays(self, nums: List[int], modulo: int, k: int) -> int:
+        ints = []
+        start = -1
+        for i in range(len(nums)):
+            if nums[i] % modulo == k:
+                ints.append(i-start-1)
+                start = i
+        ints.append(len(nums)-start-1)
+        result = 0
+        print(ints)
+        ms = defaultdict(int)
+        for i in range(len(ints)):
+            if k > 0:
+                t = (i+modulo-k) % modulo
+                left = ms[t]
+                right = ints[i]+1
+                result += left*right
+            else:
+                t = i % modulo
+                left = ms[t]
+                right = ints[i]+1
+                result += left*right + (ints[i]*(ints[i]+1))//2
+            ms[i%modulo] += ints[i]+1
+        return result
 start_time = time.time()
 t = Solution()
-root = t.getWordsInLongestSubsequence(["ca","cb","bcd","bb","ddc"],[2,4,2,5,1])
-#79033769
-#root = t.countBalancedPermutations("1120")
+root = t.countInterestingSubarrays([3,5,4,2], 5, 0)        
 #print(root.val)
+#    root.print_tree()
 print(root)
 end_time = time.time()
 execution_time = end_time - start_time

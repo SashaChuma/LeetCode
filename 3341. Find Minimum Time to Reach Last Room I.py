@@ -64,51 +64,39 @@ class BIT:
         return result 
 import math
 class Solution:
-    def getWordsInLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:        
-        
-        n = len(words)
-        if n == 10 and groups[0] == 10 and words[5] == "aba":
-            return ["add","aad"]
-        prev = []
-        dic = dict()
-        for j in range(n):
-            w, g = words[j], groups[j]
-            max_len = 1
-            max_prev = -1
-            for i in range(len(w)):
-                sub = w[:i]+"$"+w[i+1:]
-                if sub in dic:
-                    g1, l, prev1 = dic[sub]
-                    _, l = prev[prev1]
-                    if g != g1:
-                        l += 1
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        dic[sub] = g, l, j
-                    else:
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        
-
-                else:
-                    dic[sub] = g, 1, j
-            prev.append((max_prev, max_len))
-        max_len = max([y for _, y in prev])
-        p = max([i for i, (_, y) in enumerate(prev) if y == max_len])
-        result = [words[p]]
-        _, l = prev[p]
-        while (p >= 0):
-            (p, l1), w = prev[p], words[p]
-            if l1 < l:
-                result.append(w)
-            l = l1
-        print(prev)
-        return list(reversed(result))
+    def minTimeToReach(self, moveTime: List[List[int]]) -> int:
+        n = len(moveTime)
+        m = len(moveTime[0])
+        res = [[-1]*m for _ in range(n)]
+        visited = set()
+        h = []
+        dirs = [(1,0),(0,1),(-1,0),(0,-1)]
+        heapq.heappush(h, (0, 0, 0, 2))
+        while h:
+            t,r,c,move = heapq.heappop(h)
+            if (r,c) in visited:
+                continue
+            if r == n-1 and c == m-1:
+                return t
+            visited.add((r,c))
+            print(r,c)
+            print_m(res)
+            res[r][c] = t
+            for dr, dc in dirs:
+                r2 = r+dr
+                c2 = c+dc
+                if r2 >= 0 and r2 < n:
+                    if c2 >= 0 and c2 < m and (r2,c2) not in visited:
+                        nm = 1 if move == 2 else 2
+                        nt = max(t+nm,moveTime[r2][c2]+nm)
+                        if res[r2][c2] == -1 or res[r2][c2] > nt:
+                            res[r2][c2] = nt
+                            heapq.heappush(h, (nt, r2,c2, nm))
+        print_m(res)
+        return 0
 start_time = time.time()
 t = Solution()
-root = t.getWordsInLongestSubsequence(["ca","cb","bcd","bb","ddc"],[2,4,2,5,1])
-#79033769
-#root = t.countBalancedPermutations("1120")
+root = t.minTimeToReach([[0,58],[27,69]])
 #print(root.val)
 print(root)
 end_time = time.time()

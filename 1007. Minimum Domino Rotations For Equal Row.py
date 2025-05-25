@@ -64,51 +64,21 @@ class BIT:
         return result 
 import math
 class Solution:
-    def getWordsInLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:        
-        
-        n = len(words)
-        if n == 10 and groups[0] == 10 and words[5] == "aba":
-            return ["add","aad"]
-        prev = []
-        dic = dict()
-        for j in range(n):
-            w, g = words[j], groups[j]
-            max_len = 1
-            max_prev = -1
-            for i in range(len(w)):
-                sub = w[:i]+"$"+w[i+1:]
-                if sub in dic:
-                    g1, l, prev1 = dic[sub]
-                    _, l = prev[prev1]
-                    if g != g1:
-                        l += 1
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        dic[sub] = g, l, j
-                    else:
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        
-
-                else:
-                    dic[sub] = g, 1, j
-            prev.append((max_prev, max_len))
-        max_len = max([y for _, y in prev])
-        p = max([i for i, (_, y) in enumerate(prev) if y == max_len])
-        result = [words[p]]
-        _, l = prev[p]
-        while (p >= 0):
-            (p, l1), w = prev[p], words[p]
-            if l1 < l:
-                result.append(w)
-            l = l1
-        print(prev)
-        return list(reversed(result))
+    def minDominoRotations(self, tops: List[int], bottoms: List[int]) -> int:
+        def get_count(x) -> int:
+            return len(tops)-max(tops.count(x), bottoms.count(x))    
+        s = set([tops[0], bottoms[0]])
+        for i in range(1, len(tops)):
+            s = s.intersection(set([tops[i], bottoms[i]]))
+        if len(s) == 0:
+            return -1
+        l = list(s)
+        if len(s) == 1:
+            return get_count(l[0])
+        return min(get_count(l[0]),get_count(l[1]))
 start_time = time.time()
 t = Solution()
-root = t.getWordsInLongestSubsequence(["ca","cb","bcd","bb","ddc"],[2,4,2,5,1])
-#79033769
-#root = t.countBalancedPermutations("1120")
+root = t.minDominoRotations([2,1,2,4,2,2],[5,2,6,2,3,2])
 #print(root.val)
 print(root)
 end_time = time.time()

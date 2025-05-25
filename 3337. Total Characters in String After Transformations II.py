@@ -64,49 +64,41 @@ class BIT:
         return result 
 import math
 class Solution:
-    def getWordsInLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:        
+    def multiply_m(self, m1, m2):
+        mod = 10**9+7
+        mat = [[0]*26 for _ in range(26)]
+        for row in range(26):
+            for col in range(26):
+                mat[row][col] = sum([m1[row][i]*m2[i][col] for i in range(26)])%mod
+        return mat
+    def multiply_r(self, m, r):
+        mod = 10**9+7
+        res = [0]*26
+        for i in range(26):
+            res[i] = sum([r[j]*m[j][i] for j in range(26)])%mod
+        return res
+    def lengthAfterTransformations(self, s: str, t: int, nums: List[int]) -> int:
+        mod = 10**9+7
+        c = Counter(s)
+        ord_a = ord('a')
+        freq = [c[chr(ord_a+i)] for i in range(26)]
+        bt = list(reversed(bin(t)[2:]))
+        print(bt)
+        mat = [[0]*26 for _ in range(26)]
+        for row in range(26):
+            for col in range(nums[row]):
+                mat[row][(row+col+1)%26] = 1
+        if bt[0] == '1':
+            freq = self.multiply_r(mat, freq)
+        for i in range(1, len(bt)):
+            mat = self.multiply_m(mat, mat)
+            if bt[i] == '1':
+                freq = self.multiply_r(mat, freq)    
         
-        n = len(words)
-        if n == 10 and groups[0] == 10 and words[5] == "aba":
-            return ["add","aad"]
-        prev = []
-        dic = dict()
-        for j in range(n):
-            w, g = words[j], groups[j]
-            max_len = 1
-            max_prev = -1
-            for i in range(len(w)):
-                sub = w[:i]+"$"+w[i+1:]
-                if sub in dic:
-                    g1, l, prev1 = dic[sub]
-                    _, l = prev[prev1]
-                    if g != g1:
-                        l += 1
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        dic[sub] = g, l, j
-                    else:
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        
-
-                else:
-                    dic[sub] = g, 1, j
-            prev.append((max_prev, max_len))
-        max_len = max([y for _, y in prev])
-        p = max([i for i, (_, y) in enumerate(prev) if y == max_len])
-        result = [words[p]]
-        _, l = prev[p]
-        while (p >= 0):
-            (p, l1), w = prev[p], words[p]
-            if l1 < l:
-                result.append(w)
-            l = l1
-        print(prev)
-        return list(reversed(result))
+        return sum(freq)%mod
 start_time = time.time()
 t = Solution()
-root = t.getWordsInLongestSubsequence(["ca","cb","bcd","bb","ddc"],[2,4,2,5,1])
+root = t.lengthAfterTransformations("jqktcurgdvlibczdsvnsg", 7517, [1]*25+[2])
 #79033769
 #root = t.countBalancedPermutations("1120")
 #print(root.val)

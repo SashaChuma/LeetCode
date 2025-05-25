@@ -62,54 +62,34 @@ class BIT:
             result += self.data[i]
             i -= (i & -i)
         return result 
-import math
 class Solution:
-    def getWordsInLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:        
-        
-        n = len(words)
-        if n == 10 and groups[0] == 10 and words[5] == "aba":
-            return ["add","aad"]
-        prev = []
-        dic = dict()
-        for j in range(n):
-            w, g = words[j], groups[j]
-            max_len = 1
-            max_prev = -1
-            for i in range(len(w)):
-                sub = w[:i]+"$"+w[i+1:]
-                if sub in dic:
-                    g1, l, prev1 = dic[sub]
-                    _, l = prev[prev1]
-                    if g != g1:
-                        l += 1
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        dic[sub] = g, l, j
-                    else:
-                        if l > max_len:
-                            max_len, max_prev = l, prev1
-                        
+    def countGood(self, nums: List[int], k: int) -> int:
+        c = defaultdict(int)
+        pairs = 0
+        start = -1 
+        end = -1
+        n = len(nums)
+        result = 0
+        while end < n-1 or pairs >= k:
+            while end < n-1 and pairs < k:
+                end += 1
+                c[nums[end]] += 1
+                pairs += c[nums[end]]-1
+            if pairs >= k:
+                result += n-end
+            
 
-                else:
-                    dic[sub] = g, 1, j
-            prev.append((max_prev, max_len))
-        max_len = max([y for _, y in prev])
-        p = max([i for i, (_, y) in enumerate(prev) if y == max_len])
-        result = [words[p]]
-        _, l = prev[p]
-        while (p >= 0):
-            (p, l1), w = prev[p], words[p]
-            if l1 < l:
-                result.append(w)
-            l = l1
-        print(prev)
-        return list(reversed(result))
+            start+=1
+            pairs -= c[nums[start]]-1
+            c[nums[start]] -= 1
+
+        return result
+
 start_time = time.time()
 t = Solution()
-root = t.getWordsInLongestSubsequence(["ca","cb","bcd","bb","ddc"],[2,4,2,5,1])
-#79033769
-#root = t.countBalancedPermutations("1120")
+root = t.countGood([3,1,4,3,2,2,4], 2)        
 #print(root.val)
+#    root.print_tree()
 print(root)
 end_time = time.time()
 execution_time = end_time - start_time
