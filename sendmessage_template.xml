@@ -1,0 +1,39 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v20="http://csioz.gov.pl/p1/erecepta/ws/v20170510" xmlns:v201="http://csioz.gov.pl/p1/kontekst/mt/v20170510" xmlns:v202="http://csioz.gov.pl/p1/erecepta/mt/v20170510" xmlns:v203="http://csioz.gov.pl/p1/wspolne/mt/v20170510">
+  <soapenv:Header>
+    <v201:kontekstWywolania wsu:Id="id-66FCD822694D469CBF41CC01F4F776110" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <v201:atrybut nazwa="urn:csioz:p1:erecepta:kontekst:idPodmiotuOidRoot">
+        <v201:wartosc>2.16.840.1.113883.3.4424.2.3.1</v201:wartosc>
+      </v201:atrybut>
+      <v201:atrybut nazwa="urn:csioz:p1:erecepta:kontekst:idPodmiotuOidExt">
+        <v201:wartosc>000000926669</v201:wartosc>
+      </v201:atrybut>
+      <v201:atrybut nazwa="urn:csioz:p1:erecepta:kontekst:idUzytkownikaOidRoot">
+        <v201:wartosc>2.16.840.1.113883.3.4424.1.6.2</v201:wartosc>
+      </v201:atrybut>
+      <v201:atrybut nazwa="urn:csioz:p1:erecepta:kontekst:idUzytkownikaOidExt">
+        <v201:wartosc>7960862</v201:wartosc>
+      </v201:atrybut>
+      <v201:atrybut nazwa="urn:csioz:p1:erecepta:kontekst:idMiejscaPracyOidRoot">
+        <v201:wartosc>2.16.840.1.113883.3.4424.2.3.2</v201:wartosc>
+      </v201:atrybut>
+      <v201:atrybut nazwa="urn:csioz:p1:erecepta:kontekst:idMiejscaPracyOidExt">
+        <v201:wartosc>4</v201:wartosc>
+      </v201:atrybut>
+      <v201:atrybut nazwa="urn:csioz:p1:erecepta:kontekst:rolaBiznesowa">
+        <v201:wartosc>LEKARZ_LEK_DENTYSTA_FELCZER</v201:wartosc>
+      </v201:atrybut>
+    </v201:kontekstWywolania>
+  </soapenv:Header>
+  <soapenv:Body wsu:Id="id-66FCD822694D469CBF41CC01F4F776111" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+    <v20:ZapisPakietuReceptRequest>
+      <pakietRecept>
+        <v202:recepty>
+          <v202:recepta>
+            <v202:identyfikatorDokumentuWPakiecie>1</v202:identyfikatorDokumentuWPakiecie>
+            <v202:tresc>{recepta}</v202:tresc>
+          </v202:recepta>
+        </v202:recepty>
+      </pakietRecept>
+    </v20:ZapisPakietuReceptRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
